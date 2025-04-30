@@ -5,24 +5,32 @@ class AppTheme {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       shadowColor: Colors.transparent,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xffFFFFFF),
     ),
     
     useMaterial3: true,
     fontFamily: 'Poppins',
-    primaryColor: const Color(0xffFD2942),
     brightness: Brightness.light,
+    colorScheme: const ColorScheme.light(
+      primary: Color(0xff007AFF),
+      secondary: Color(0xffFF6B00), 
+      tertiary: Color(0xff34C759),  
+    ),
   );
 
   static ThemeData darkTheme = ThemeData(
     appBarTheme: const AppBarTheme(
       elevation: 0,
       shadowColor: Colors.transparent,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xffFFFFFF),
     ),
     useMaterial3: true,
     fontFamily: 'Poppins',
-    primaryColor: const Color(0xffFD2942),
     brightness: Brightness.dark,
+    colorScheme: const ColorScheme.light(
+      primary: Color(0xff007AFF),
+      secondary: Color(0xffFF6B00), 
+      tertiary: Color(0xff34C759),  
+    ),
   );
 }
