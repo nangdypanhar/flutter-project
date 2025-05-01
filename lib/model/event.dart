@@ -1,16 +1,13 @@
 import 'package:flutter_project/model/user.dart';
 
-enum SportType { swimming, running, cycling }
-
 class Event {
+  final String id;
   final DateTime startTime;
   final DateTime endTime;
-  final String eventId;
-  final SportType sportType;
-  List<User> participants;
+
+  final List<User> participants;
   Event({
-    required this.eventId,
-    required this.sportType,
+    required this.id,
     required this.startTime,
     required this.endTime,
     this.participants = const [],

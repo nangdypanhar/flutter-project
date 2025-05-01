@@ -1,15 +1,49 @@
 import 'package:uuid/uuid.dart';
 
 class User {
-  static final uuid = Uuid();
-
-  final String userId;
+  static final _uuid = Uuid();
+  final String id;
   final String bibNumber;
-  final String userName;
-  final DateTime? finishedAt;
+  final String name;
+  final DateTime? swimStartAt;
+  final DateTime? swimFinishAt;
+  final DateTime? runStartAt;
+  final DateTime? runFinishAt;
+  final DateTime? cyclingStartAt;
+  final DateTime? cyclingFinishAt;
+
   User({
-    required this.userName,
+    String? id,
+    required this.name,
     required this.bibNumber,
-    this.finishedAt,
-  }) : userId = uuid.v4();
+    this.runStartAt,
+    this.runFinishAt,
+    this.cyclingStartAt,
+    this.cyclingFinishAt,
+    this.swimStartAt,
+    this.swimFinishAt,
+  }) : id = id ?? _uuid.v4();
+
+  User copyWith({
+    String? bibNumber,
+    String? name,
+    DateTime? swimStartAt,
+    DateTime? swimFinishAt,
+    DateTime? runStartAt,
+    DateTime? runFinishAt,
+    DateTime? cyclingStartAt,
+    DateTime? cyclingFinishAt,
+  }) {
+    return User(
+      id: id,
+      name: name ?? this.name,
+      bibNumber: bibNumber ?? this.bibNumber,
+      swimStartAt: swimStartAt ?? this.swimStartAt,
+      swimFinishAt: swimFinishAt ?? this.swimFinishAt,
+      runStartAt: runStartAt ?? this.runStartAt,
+      runFinishAt: runFinishAt ?? this.runFinishAt,
+      cyclingStartAt: cyclingStartAt ?? this.cyclingStartAt,
+      cyclingFinishAt: cyclingFinishAt ?? this.cyclingFinishAt,
+    );
+  }
 }
