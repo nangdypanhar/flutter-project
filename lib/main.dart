@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/providers/user_provider.dart';
 import 'package:flutter_project/repository/user_repository.dart';
 import 'package:flutter_project/theme/theme.dart';
-// import 'package:flutter_project/homepage.dart';
-import 'package:flutter_project/view/event/event_view.dart';
+import 'package:flutter_project/view/home/home_view.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -26,8 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: EventView(),
-      // home: Homepage(),
+      home: HomeView(),
       theme: AppTheme.lightTheme,
     );
   }

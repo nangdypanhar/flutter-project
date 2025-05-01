@@ -7,12 +7,17 @@ class UserProvider extends ChangeNotifier {
   final UserRepository _userRepository;
   AsyncValue<List<User>>? userState;
 
+  List<User> _userList = [];
+
+  List<User> get userList => _userList;
+
   UserProvider(this._userRepository) {
     getUsers();
   }
 
   bool get isLoading =>
       userState != null && userState!.state == AsyncValueState.loading;
+
   bool get hasData =>
       userState != null && userState!.state == AsyncValueState.success;
 
@@ -21,7 +26,9 @@ class UserProvider extends ChangeNotifier {
       userState = AsyncValue.loading();
       notifyListeners();
 
-      userState = AsyncValue.success(await _userRepository.getAll());
+      final users = await _userRepository.getAll();
+      _userList = users;
+      userState = AsyncValue.success(users);
     } catch (error) {
       userState = AsyncValue.error(error);
     } finally {

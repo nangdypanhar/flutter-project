@@ -17,12 +17,12 @@ class UserRepository extends BaseRepository<User> {
 
   @override
   Future<void> remove(String id) async {
-    _users.removeWhere((user) => user.userId == id);
+    _users.removeWhere((user) => user.id == id);
   }
 
   @override
   Future<void> update(User updatedUser) async {
-    final index = _users.indexWhere((user) => user.userId == updatedUser.userId);
+    final index = _users.indexWhere((user) => user.id == updatedUser.id);
     if (index != -1) {
       _users[index] = updatedUser;
     }
