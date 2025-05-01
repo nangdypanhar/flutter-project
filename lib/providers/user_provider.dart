@@ -31,8 +31,6 @@ class UserProvider extends ChangeNotifier {
       userState = AsyncValue.success(users);
     } catch (error) {
       userState = AsyncValue.error(error);
-    } finally {
-      notifyListeners();
     }
   }
 

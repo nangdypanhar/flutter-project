@@ -1,8 +1,5 @@
-import 'package:uuid/uuid.dart';
-
 class User {
-  static final _uuid = Uuid();
-  final String id;
+  final String? id;
   final String bibNumber;
   final String name;
   final DateTime? swimStartAt;
@@ -13,7 +10,7 @@ class User {
   final DateTime? cyclingFinishAt;
 
   User({
-    String? id,
+    this.id,
     required this.name,
     required this.bibNumber,
     this.runStartAt,
@@ -22,9 +19,10 @@ class User {
     this.cyclingFinishAt,
     this.swimStartAt,
     this.swimFinishAt,
-  }) : id = id ?? _uuid.v4();
+  });
 
   User copyWith({
+    String? id,
     String? bibNumber,
     String? name,
     DateTime? swimStartAt,
@@ -35,7 +33,7 @@ class User {
     DateTime? cyclingFinishAt,
   }) {
     return User(
-      id: id,
+      id: id ?? this.id,
       name: name ?? this.name,
       bibNumber: bibNumber ?? this.bibNumber,
       swimStartAt: swimStartAt ?? this.swimStartAt,

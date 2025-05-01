@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/model/user.dart' show User;
+import 'package:flutter_project/providers/async_value.dart';
 import 'package:flutter_project/repository/user_repository.dart';
+import 'package:logger/web.dart';
 
 class ParticipantViewModel extends ChangeNotifier {
   final UserRepository _userRepository;
+  AsyncValue<List<User>>? userState;
 
   String? editingUserId;
   List<User> _userList = [];
   List<User> _filteredUserList = [];
+
+  bool get isLoading =>
+      userState != null && userState!.state == AsyncValueState.loading;
+
+  bool get hasData =>
+      userState != null && userState!.state == AsyncValueState.success;
 
   ParticipantViewModel(this._userRepository) {
     getUsers();
@@ -17,14 +26,22 @@ class ParticipantViewModel extends ChangeNotifier {
 
   bool isEditing(User user) => editingUserId == user.id;
 
-  Future<void> getUsers() async {
+  void getUsers() async {
     try {
-      _userList = await _userRepository.getAll();
-      _filteredUserList = _userList;
+      userState = AsyncValue.loading();
       notifyListeners();
+
+      final users = await _userRepository.getAll();
+
+      _userList = users;
+      _filteredUserList = users;
+      userState = AsyncValue.success(users);
     } catch (error) {
-      throw Exception("Failed to load users: $error");
+      Logger().d('Error fetching users: $error');
+      userState = AsyncValue.error(error);
     }
+
+    notifyListeners();
   }
 
   void addUser(User user) async {

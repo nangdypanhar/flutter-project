@@ -83,7 +83,7 @@ class _ParticipantTable extends StatelessWidget {
                             onPressed:
                                 () => ConfirmDialog(
                                   onConfirm:
-                                      () => viewModel.deleteUser(user.id),
+                                      () => viewModel.deleteUser(user.id!),
                                 ).show(context),
                             padding: EdgeInsets.all(8.0),
                             iconSize: 24.0,
