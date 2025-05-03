@@ -6,7 +6,6 @@ import 'package:flutter_project/widgets/confirm_dialog.dart';
 import 'package:flutter_project/widgets/race_snack_bar.dart';
 import 'package:provider/provider.dart';
 
-
 part 'participant_content.dart';
 part 'local_widget/participant_table.dart';
 part 'local_widget/search_field.dart';
