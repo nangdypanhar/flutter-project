@@ -18,6 +18,7 @@ class _AddParticipantRow extends StatelessWidget {
         SizedBox(
           width: 70,
           child: TextField(
+            onTap: () => FocusScope.of(context).unfocus(),
             controller: bibController,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
@@ -31,6 +32,7 @@ class _AddParticipantRow extends StatelessWidget {
         SizedBox(
           width: 250,
           child: TextField(
+            onTap: () => FocusScope.of(context).unfocus(),
             controller: nameController,
             decoration: const InputDecoration(
               hintText: "Name",

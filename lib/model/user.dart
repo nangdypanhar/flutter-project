@@ -1,5 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 class User {
-  final String? id;
+  final String id;
   final String bibNumber;
   final String name;
   final DateTime? swimStartAt;
@@ -10,7 +12,7 @@ class User {
   final DateTime? cyclingFinishAt;
 
   User({
-    this.id,
+    String? id,
     required this.name,
     required this.bibNumber,
     this.runStartAt,
@@ -19,7 +21,7 @@ class User {
     this.cyclingFinishAt,
     this.swimStartAt,
     this.swimFinishAt,
-  });
+  }) : id = id ?? const Uuid().v4();
 
   User copyWith({
     String? id,

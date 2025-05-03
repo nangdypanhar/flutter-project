@@ -1,4 +1,3 @@
-
 part of '../participant_view.dart';
 
 class _SearchField extends StatelessWidget {
@@ -12,6 +11,7 @@ class _SearchField extends StatelessWidget {
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
+        onTap: () => FocusScope.of(context).unfocus(),
         onChanged: onChanged,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.search),

@@ -16,12 +16,13 @@ class ParticipantView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<ParticipantViewModel>(
       create: (context) => ParticipantViewModel(UserRepository()),
-      builder: (context, child) {
-        final viewModel = Provider.of<ParticipantViewModel>(context);
-        return _ParticipantContent(viewModel: viewModel);
-      },
+      child: Consumer<ParticipantViewModel>(
+        builder: (context, viewModel, child) {
+          return _ParticipantContent(viewModel: viewModel);
+        },
+      ),
     );
   }
 }

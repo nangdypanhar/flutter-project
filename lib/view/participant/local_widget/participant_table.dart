@@ -31,6 +31,7 @@ class _ParticipantTable extends StatelessWidget {
                     DataCell(
                       isEditing
                           ? TextField(
+                            onTap: () => FocusScope.of(context).unfocus(),
                             controller: bibController,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -83,7 +84,7 @@ class _ParticipantTable extends StatelessWidget {
                             onPressed:
                                 () => ConfirmDialog(
                                   onConfirm:
-                                      () => viewModel.deleteUser(user.id!),
+                                      () => viewModel.deleteUser(user),
                                 ).show(context),
                             padding: EdgeInsets.all(8.0),
                             iconSize: 24.0,
