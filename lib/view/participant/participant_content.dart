@@ -7,14 +7,13 @@ class _ParticipantContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<ParticipantViewModel>(context);
     final nameController = TextEditingController();
     final bibController = TextEditingController();
 
     Widget content = Text('No user found');
 
     if (viewModel.isLoading) {
-      content = CircularProgressIndicator();
+      content = Center(child: CircularProgressIndicator());
     } else {
       content = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

@@ -1,8 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_project/model/user.dart';
 import 'package:flutter_project/providers/user_provider.dart';
 
-class ParticipantViewModel extends UserProvider {
-  ParticipantViewModel(super.userRepository);
+class ParticipantViewModel extends ChangeNotifier {
+  final UserProvider userProvider;
+
+  ParticipantViewModel(this.userProvider);
+
+  void searchParticipant(String query) {
+    userProvider.searchParticipant(query);
+    notifyListeners();
+  }
+
+  void addUser(User user) {
+    userProvider.addUser(user);
+    notifyListeners();
+  }
+
+  void deleteUser(User user) {
+    userProvider.deleteUser(user);
+    notifyListeners();
+  }
+
+  List<User> get userList => userProvider.userList;
+  bool get isLoading => userProvider.isLoading;
+  bool get hasData => userProvider.hasData;
+
+  String? editingUserId;
 
   bool isEditing(User user) => editingUserId == user.id;
 
@@ -13,6 +37,7 @@ class ParticipantViewModel extends UserProvider {
 
   void saveEditing(User user) {
     editingUserId = '';
-    updateUser(user);
+    userProvider.updateUser(user);
+    notifyListeners();
   }
 }

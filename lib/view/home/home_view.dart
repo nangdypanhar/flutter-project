@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/view/participant/participant_view.dart';
+import 'package:flutter_project/view/result/result_view.dart';
+import 'package:flutter_project/view/time_stater/time_starter.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,8 +16,8 @@ class _HomeViewState extends State<HomeView> {
   static final List<String> _title = ['Participants', 'Time Tracker', 'Result'];
   static final List<Widget> _widgetOptions = [
     ParticipantView(),
-    ParticipantView(),
-    ParticipantView(),
+    TimeStarter(),
+    ResultView(),
   ];
 
   void _onItemTapped(int index) {
