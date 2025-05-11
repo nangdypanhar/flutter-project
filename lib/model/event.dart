@@ -1,15 +1,25 @@
-import 'package:flutter_project/model/user.dart';
+import 'package:uuid/uuid.dart';
 
 class Event {
   final String id;
-  final DateTime startTime;
-  final DateTime endTime;
+  final DateTime startAt;
+  final DateTime finishAt;
 
-  final List<User> participants;
   Event({
-    required this.id,
-    required this.startTime,
-    required this.endTime,
-    this.participants = const [],
-  });
+    String? id,
+    required this.startAt,
+    required this.finishAt,
+  }) : id = id ?? const Uuid().v4();
+
+  Event copyWith({
+    String? id,
+    DateTime? startAt,
+    DateTime? finishAt,
+  }) {
+    return Event(
+      id: id ?? this.id,
+      startAt: startAt ?? this.startAt,
+      finishAt: finishAt ?? this.finishAt,
+    );
+  }
 }

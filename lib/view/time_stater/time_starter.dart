@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DashboardView extends StatelessWidget {
-  const DashboardView({super.key});
+class TimeStarter extends StatelessWidget {
+  const TimeStarter({super.key});
 
   @override
   Widget build(BuildContext context) {
