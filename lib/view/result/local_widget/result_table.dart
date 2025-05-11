@@ -45,7 +45,7 @@ class _ResultTable extends StatelessWidget {
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 120),
                     child: Text(
-                      totalTime != null ? formatDuration(totalTime) : 'N/A',
+                      totalTime != null ? formatTotalTime(totalTime) : 'N/A',
                     ),
                   ),
                 ),
