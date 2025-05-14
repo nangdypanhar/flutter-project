@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/view/participant/participant_view.dart';
 import 'package:flutter_project/view/result/result_view.dart';
-import 'package:flutter_project/view/participant_tracker/participant_tracker.dart';
+import 'package:flutter_project/view/participant_tracker/participant_tracker_view.dart';
 import 'package:flutter_project/view/time_tracker/time_tracker.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
   static final List<Widget> _screens = [
     ParticipantView(),
     TimeTracker(),
-    ParticipantTracker(),
+    ParticipantTrackerView(),
     ResultView(),
   ];
 
@@ -56,10 +56,7 @@ class _HomeViewState extends State<HomeView> {
             icon: Icon(Icons.people),
             label: "Participants",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timer),
-            label: "Timer",
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Timer"),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_search),
             label: "Tracker",

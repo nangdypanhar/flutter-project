@@ -1,13 +1,18 @@
+import 'package:flutter_project/helper/time_format.dart';
 import 'package:flutter_project/model/user.dart';
 import 'package:logger/web.dart';
 
 class UserDto {
-  static DateTime? _parseDateTime(String? dateStr) {
-    if (dateStr == null || dateStr == '') return null;
+  static Duration? _parseDuration(String? durationStr) {
+    if (durationStr == null || durationStr == '') return null;
     try {
-      return DateTime.parse(dateStr);
+      final parts = durationStr.split(':');
+      final hours = int.parse(parts[0]);
+      final minutes = int.parse(parts[1]);
+      final seconds = int.parse(parts[2]);
+      return Duration(hours: hours, minutes: minutes, seconds: seconds);
     } catch (e) {
-      Logger().d("Error parsing DateTime: $dateStr | Error: $e");
+      Logger().d("Error parsing Duration: $durationStr | Error: $e");
       return null;
     }
   }
@@ -17,25 +22,26 @@ class UserDto {
       id: id,
       name: json['name'] ?? '',
       bibNumber: json['bibNumber']?.toString() ?? '',
-      runStartAt: _parseDateTime(json['runStartAt']),
-      runFinishAt: _parseDateTime(json['runFinishAt']),
-      swimStartAt: _parseDateTime(json['swimStartAt']),
-      swimFinishAt: _parseDateTime(json['swimFinishAt']),
-      cyclingStartAt: _parseDateTime(json['cyclingStartAt']),
-      cyclingFinishAt: _parseDateTime(json['cyclingFinishAt']),
+      runStartAt: _parseDuration(json['runStartAt']),
+      runFinishAt: _parseDuration(json['runFinishAt']),
+      swimStartAt: _parseDuration(json['swimStartAt']),
+      swimFinishAt: _parseDuration(json['swimFinishAt']),
+      cyclingStartAt: _parseDuration(json['cyclingStartAt']),
+      cyclingFinishAt: _parseDuration(json['cyclingFinishAt']),
     );
   }
 
   static Map<String, dynamic> toJson(User user) {
+    Logger().d("Converting user to JSON: ${user.name}");
     return {
       'name': user.name,
       'bibNumber': user.bibNumber,
-      'runStartAt': user.runStartAt?.toIso8601String() ?? '',
-      'runFinishAt': user.runFinishAt?.toIso8601String() ?? '',
-      'swimStartAt': user.swimStartAt?.toIso8601String() ?? '',
-      'swimFinishAt': user.swimFinishAt?.toIso8601String() ?? '',
-      'cyclingStartAt': user.cyclingStartAt?.toIso8601String() ?? '',
-      'cyclingFinishAt': user.cyclingFinishAt?.toIso8601String() ?? '',
+      'runStartAt': formatTotalTime(user.runStartAt ?? Duration.zero),
+      'runFinishAt': formatTotalTime(user.runFinishAt ?? Duration.zero),
+      'swimStartAt': formatTotalTime(user.swimStartAt ?? Duration.zero),
+      'swimFinishAt': formatTotalTime(user.swimFinishAt ?? Duration.zero),
+      'cyclingStartAt': formatTotalTime(user.cyclingStartAt ?? Duration.zero),
+      'cyclingFinishAt': formatTotalTime(user.cyclingFinishAt ?? Duration.zero),
     };
   }
 }

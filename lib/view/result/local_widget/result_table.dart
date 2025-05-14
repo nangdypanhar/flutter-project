@@ -20,7 +20,7 @@ class _ResultTable extends StatelessWidget {
           rankedUsers.asMap().entries.map((entry) {
             final index = entry.key;
             final user = entry.value;
-            Duration? totalTime = viewModel.getTotalTime(user);
+            Duration? totalTime = getTotalDurationForUser(user);
             return DataRow(
               cells: [
                 DataCell(
@@ -44,9 +44,7 @@ class _ResultTable extends StatelessWidget {
                 DataCell(
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 120),
-                    child: Text(
-                      totalTime != null ? formatTotalTime(totalTime) : 'N/A',
-                    ),
+                    child: Text(formatTotalTime(totalTime)),
                   ),
                 ),
               ],

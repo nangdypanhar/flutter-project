@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/model/user.dart';
 import 'package:flutter_project/providers/async_value.dart';
 import 'package:flutter_project/repository/user_repository.dart';
+import 'package:flutter_project/view/participant_tracker/participant_tracker_view.dart';
 import 'package:logger/logger.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -82,6 +83,41 @@ class UserProvider extends ChangeNotifier {
 
   void searchParticipant(String query) {
     _searchQuery = query;
+    notifyListeners();
+  }
+
+  void updateParticipantStage({
+    required String userId,
+    required Duration time,
+    required SegmentType segment,
+    required TrackType trackType,
+  }) {
+    final user = _userList.firstWhere((user) => user.id == userId);
+
+    final User? updatedUser;
+
+    switch (segment) {
+      case SegmentType.swimming:
+        updatedUser =
+            trackType == TrackType.start
+                ? user.copyWith(swimStartAt: time)
+                : user.copyWith(swimFinishAt: time);
+        break;
+      case SegmentType.cycling:
+        updatedUser =
+            trackType == TrackType.start
+                ? user.copyWith(cyclingStartAt: time)
+                : user.copyWith(cyclingFinishAt: time);
+        break;
+      case SegmentType.running:
+        updatedUser =
+            trackType == TrackType.start
+                ? user.copyWith(runStartAt: time)
+                : user.copyWith(runFinishAt: time);
+        break;
+    }
+
+    updateUser(updatedUser);
     notifyListeners();
   }
 }
