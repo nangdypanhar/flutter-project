@@ -23,20 +23,15 @@ String formatDuration(Duration duration) {
   // Ex: 6:10:05:83
 }
 
-Duration? getTotalTimeFromHelper(User user) {
-  final finishes = [user.swimFinishAt, user.runFinishAt, user.cyclingFinishAt];
-  final starts = [user.swimStartAt, user.runStartAt, user.cyclingStartAt];
+Duration getTotalDurationForUser(User user) {
+  Duration totalDuration = Duration.zero;
 
-  if (finishes.any((e) => e == null) || starts.any((e) => e == null)) {
-    return null;
+  if (user.swimFinishAt != null &&
+      user.runFinishAt != null &&
+      user.cyclingFinishAt != null) {
+    return totalDuration =
+        user.swimFinishAt! + user.runFinishAt! + user.cyclingFinishAt!;
   }
 
-  final latestFinish = finishes.cast<DateTime>().reduce(
-    (a, b) => a.isAfter(b) ? a : b,
-  );
-  final earliestStart = starts.cast<DateTime>().reduce(
-    (a, b) => a.isBefore(b) ? a : b,
-  );
-
-  return latestFinish.difference(earliestStart);
+  return totalDuration;
 }

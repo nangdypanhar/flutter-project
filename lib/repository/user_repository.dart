@@ -70,25 +70,19 @@ class UserRepository extends BaseRepository<User> {
   Future<void> update(User user) async {
     final Uri uri = Uri.parse('$baseUrl/${user.id}.json');
 
+    final Map<String, dynamic> updatedUser = UserDto.toJson(user);
+
     final response = await http.patch(
       uri,
       headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'name': user.name,
-        'bibNumber': user.bibNumber,
-        'runStartAt': user.runStartAt,
-        'runFinishAt': user.runFinishAt,
-        'swimStartAt': user.swimStartAt,
-        'swimFinishAt': user.swimFinishAt,
-        'cyclingStartAt': user.cyclingStartAt,
-        'cyclingFinishAt': user.cyclingFinishAt,
-      }),
+      body: json.encode(updatedUser),
     );
 
     if (response.statusCode == HttpStatus.ok) {
-        Logger().d('User update successfully!');
+      Logger().d('User updated successfully!');
     } else {
-      throw Exception('Failed to update user');
+      Logger().e('Failed to update user: ${response.body}');
+      throw Exception('Failed to update user (Status: ${response.statusCode})');
     }
   }
 }

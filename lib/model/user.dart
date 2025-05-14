@@ -4,12 +4,12 @@ class User {
   final String id;
   final String bibNumber;
   final String name;
-  final DateTime? swimStartAt;
-  final DateTime? swimFinishAt;
-  final DateTime? runStartAt;
-  final DateTime? runFinishAt;
-  final DateTime? cyclingStartAt;
-  final DateTime? cyclingFinishAt;
+  final Duration? swimStartAt;
+  final Duration? swimFinishAt;
+  final Duration? runStartAt;
+  final Duration? runFinishAt;
+  final Duration? cyclingStartAt;
+  final Duration? cyclingFinishAt;
 
   User({
     String? id,
@@ -27,12 +27,12 @@ class User {
     String? id,
     String? bibNumber,
     String? name,
-    DateTime? swimStartAt,
-    DateTime? swimFinishAt,
-    DateTime? runStartAt,
-    DateTime? runFinishAt,
-    DateTime? cyclingStartAt,
-    DateTime? cyclingFinishAt,
+    Duration? swimStartAt,
+    Duration? swimFinishAt,
+    Duration? runStartAt,
+    Duration? runFinishAt,
+    Duration? cyclingStartAt,
+    Duration? cyclingFinishAt,
   }) {
     return User(
       id: id ?? this.id,

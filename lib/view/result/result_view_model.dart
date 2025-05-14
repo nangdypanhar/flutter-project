@@ -10,24 +10,25 @@ class ResultViewModel extends ChangeNotifier {
   AsyncValue<List<User>>? get userState => userProvider.userState;
   bool get isLoading => userProvider.isLoading;
 
-  Duration? getTotalTime(User user) {
-    return getTotalTimeFromHelper(user);
-  }
-
   ResultViewModel(this.userProvider);
-
   List<User> getRankedParticipants() {
     final usersWithTime = <User>[];
     final usersWithoutTime = <User>[];
 
     for (final user in userProvider.userList) {
-      final totalTime = getTotalTime(user);
-      (totalTime != null ? usersWithTime : usersWithoutTime).add(user);
-    }
+      final totalTime = getTotalDurationForUser(user);
 
-    usersWithTime.sort(
-      (a, b) => getTotalTime(a)!.compareTo(getTotalTime(b)!),
-    );
+      if (totalTime != Duration.zero) {
+        usersWithTime.add(user);
+      } else {
+        usersWithoutTime.add(user);
+      }
+    }
+    usersWithTime.sort((a, b) {
+      final totalTimeA = getTotalDurationForUser(a);
+      final totalTimeB = getTotalDurationForUser(b);
+      return totalTimeA.compareTo(totalTimeB); 
+    });
 
     return [...usersWithTime, ...usersWithoutTime];
   }
