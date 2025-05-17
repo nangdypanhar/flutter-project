@@ -12,11 +12,12 @@ class TimeTracker extends StatefulWidget {
 
 class _TimeTrackerState extends State<TimeTracker> {
   final TimerService _timerService = TimerService();
-  bool isStarted = false;
+
+  bool get isStarted => _timerService.elapsed.value > Duration.zero;
 
   String get _pauseResumeLabel {
     if (_timerService.isRunning) return "Pause";
-    return _timerService.elapsed.value > Duration.zero ? "Resume" : "Pause";
+    return isStarted ? "Resume" : "Pause";
   }
 
   void _handleStartOrFinish() {
@@ -25,7 +26,7 @@ class _TimeTrackerState extends State<TimeTracker> {
     } else {
       _timerService.finish();
     }
-    setState(() => isStarted = !isStarted);
+    setState(() {});
   }
 
   @override
@@ -91,7 +92,7 @@ class _TimeTrackerState extends State<TimeTracker> {
                             } else {
                               _timerService.resume();
                             }
-                            setState(() {}); 
+                            setState(() {});
                           },
                     color: Colors.orange,
                   ),
@@ -102,7 +103,7 @@ class _TimeTrackerState extends State<TimeTracker> {
                         ? null
                         : () {
                             _timerService.reset();
-                            setState(() => isStarted = false);
+                            setState(() {});
                           },
                     color: Colors.blueGrey,
                   ),
