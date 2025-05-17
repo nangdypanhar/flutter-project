@@ -12,7 +12,10 @@ class _ResultContent extends StatelessWidget {
     if (viewModel.isLoading) {
       content = Center(child: CircularProgressIndicator());
     } else {
-      content = Column(children: [_ResultTable(viewModel: viewModel)]);
+      content = Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(children: [_ResultTable(viewModel: viewModel)]),
+      );
     }
     return content;
   }

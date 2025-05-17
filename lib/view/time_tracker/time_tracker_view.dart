@@ -3,14 +3,14 @@ import 'package:flutter_project/helper/time_format.dart';
 import 'package:flutter_project/service/timer_service.dart';
 import 'package:flutter_project/view/time_tracker/local_widget/tm_button.dart';
 
-class TimeTracker extends StatefulWidget {
-  const TimeTracker({super.key});
+class TimeTrackerView extends StatefulWidget {
+  const TimeTrackerView({super.key});
 
   @override
-  State<TimeTracker> createState() => _TimeTrackerState();
+  State<TimeTrackerView> createState() => _TimeTrackerViewState();
 }
 
-class _TimeTrackerState extends State<TimeTracker> {
+class _TimeTrackerViewState extends State<TimeTrackerView> {
   final TimerService _timerService = TimerService();
 
   bool get isStarted => _timerService.elapsed.value > Duration.zero;
