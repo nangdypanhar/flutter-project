@@ -28,7 +28,6 @@ class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
   SegmentType currentSegment = SegmentType.swimming;
 
   TextStyle _getSegmentTextStyle(SegmentType segment) {
-
     return currentSegment == segment
         ? const TextStyle(
           fontSize: 20,
@@ -62,147 +61,156 @@ class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
 
   @override
   Widget build(BuildContext context) {
+    Widget content = Text('');
+
     return Consumer<UserProvider>(
       builder: (context, provider, child) {
         final participants = provider.userList;
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                "Timer",
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              ValueListenableBuilder<Duration>(
-                valueListenable: TimerService().elapsed,
-                builder: (context, duration, child) {
-                  return Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.timer,
-                            color: Colors.white,
-                            size: 36,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            formatDuration(duration),
-                            style: const TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 24),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Segment',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _segmentButton(
-                    SegmentType.swimming,
-                    Colors.green.shade300,
-                    () {
-                      setState(() => currentSegment = SegmentType.swimming);
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  _segmentButton(
-                    SegmentType.running,
-                    Colors.orange.shade200,
-                    () {
-                      setState(() => currentSegment = SegmentType.running);
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  _segmentButton(
-                    SegmentType.cycling,
-                    Colors.purple.shade200,
-                    () {
-                      setState(() => currentSegment = SegmentType.cycling);
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Participants',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: participants.length,
-                  itemBuilder: (context, index) {
-                    final user = participants[index];
-                    final startTime = _getStartTimeForSegment(user);
-                    final finishTime = _getFinishTimeForSegment(user);
 
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: _TrackButton(
-                            started: startTime,
-                            bibNumber: user.bibNumber,
-                            label: TrackType.start.label,
-                            time: startTime,
-                            onPressed:
-                                () => provider.updateParticipantStage(
-                                  userId: user.id,
-                                  segment: currentSegment,
-                                  time: TimerService().elapsed.value,
-                                  trackType: TrackType.start,
-                                ),
-                          ),
+        if (provider.isLoading) {
+          content = Center(child: CircularProgressIndicator());
+        } else {
+          content = Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const Text(
+                  "Timer",
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                ValueListenableBuilder<Duration>(
+                  valueListenable: TimerService().elapsed,
+                  builder: (context, duration, child) {
+                    return Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.timer,
+                              color: Colors.white,
+                              size: 36,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              formatDuration(duration),
+                              style: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _TrackButton(
-                            started: startTime,
-                            bibNumber: user.bibNumber,
-                            label: TrackType.finish.label,
-                            time: finishTime,
-                            onPressed:
-                                () => provider.updateParticipantStage(
-                                  userId: user.id,
-                                  segment: currentSegment,
-                                  time: TimerService().elapsed.value,
-                                  trackType: TrackType.finish,
-                                ),
-                          ),
-                        ),
-                      ],
+                      ),
                     );
                   },
                 ),
-              ),
-            ],
-          ),
-        );
+                const SizedBox(height: 24),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Segment',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _segmentButton(
+                      SegmentType.swimming,
+                      Colors.green.shade300,
+                      () {
+                        setState(() => currentSegment = SegmentType.swimming);
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _segmentButton(
+                      SegmentType.running,
+                      Colors.orange.shade200,
+                      () {
+                        setState(() => currentSegment = SegmentType.running);
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _segmentButton(
+                      SegmentType.cycling,
+                      Colors.purple.shade200,
+                      () {
+                        setState(() => currentSegment = SegmentType.cycling);
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Participants',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: participants.length,
+                    itemBuilder: (context, index) {
+                      final user = participants[index];
+                      final startTime = _getStartTimeForSegment(user);
+                      final finishTime = _getFinishTimeForSegment(user);
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: _TrackButton(
+                              started: startTime,
+                              bibNumber: user.bibNumber,
+                              label: TrackType.start.label,
+                              time: startTime,
+                              onPressed:
+                                  () => provider.updateParticipantStage(
+                                    userId: user.id,
+                                    segment: currentSegment,
+                                    time: TimerService().elapsed.value,
+                                    trackType: TrackType.start,
+                                  ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: _TrackButton(
+                              started: startTime,
+                              bibNumber: user.bibNumber,
+                              label: TrackType.finish.label,
+                              time: finishTime,
+                              onPressed:
+                                  () => provider.updateParticipantStage(
+                                    userId: user.id,
+                                    segment: currentSegment,
+                                    time: TimerService().elapsed.value,
+                                    trackType: TrackType.finish,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return content;
       },
     );
   }
