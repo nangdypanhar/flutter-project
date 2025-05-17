@@ -26,9 +26,9 @@ class ParticipantTrackerView extends StatefulWidget {
 
 class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
   SegmentType currentSegment = SegmentType.swimming;
-  final currentTime = TimerService().elapsed.value;
 
   TextStyle _getSegmentTextStyle(SegmentType segment) {
+
     return currentSegment == segment
         ? const TextStyle(
           fontSize: 20,
@@ -174,7 +174,7 @@ class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
                                 () => provider.updateParticipantStage(
                                   userId: user.id,
                                   segment: currentSegment,
-                                  time: currentTime,
+                                  time: TimerService().elapsed.value,
                                   trackType: TrackType.start,
                                 ),
                           ),
@@ -190,7 +190,7 @@ class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
                                 () => provider.updateParticipantStage(
                                   userId: user.id,
                                   segment: currentSegment,
-                                  time: currentTime,
+                                  time: TimerService().elapsed.value,
                                   trackType: TrackType.finish,
                                 ),
                           ),
