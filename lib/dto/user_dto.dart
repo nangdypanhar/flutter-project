@@ -22,25 +22,18 @@ class UserDto {
       id: id,
       name: json['name'] ?? '',
       bibNumber: json['bibNumber']?.toString() ?? '',
-      runStartAt: _parseDuration(json['runStartAt']),
       runFinishAt: _parseDuration(json['runFinishAt']),
-      swimStartAt: _parseDuration(json['swimStartAt']),
       swimFinishAt: _parseDuration(json['swimFinishAt']),
-      cyclingStartAt: _parseDuration(json['cyclingStartAt']),
       cyclingFinishAt: _parseDuration(json['cyclingFinishAt']),
     );
   }
 
   static Map<String, dynamic> toJson(User user) {
-    Logger().d("Converting user to JSON: ${user.name}");
     return {
       'name': user.name,
       'bibNumber': user.bibNumber,
-      'runStartAt': formatTotalTime(user.runStartAt ?? Duration.zero),
       'runFinishAt': formatTotalTime(user.runFinishAt ?? Duration.zero),
-      'swimStartAt': formatTotalTime(user.swimStartAt ?? Duration.zero),
       'swimFinishAt': formatTotalTime(user.swimFinishAt ?? Duration.zero),
-      'cyclingStartAt': formatTotalTime(user.cyclingStartAt ?? Duration.zero),
       'cyclingFinishAt': formatTotalTime(user.cyclingFinishAt ?? Duration.zero),
     };
   }

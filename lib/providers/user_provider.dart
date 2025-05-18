@@ -90,7 +90,6 @@ class UserProvider extends ChangeNotifier {
     required String userId,
     required Duration time,
     required SegmentType segment,
-    required TrackType trackType,
   }) {
     final user = _userList.firstWhere((user) => user.id == userId);
 
@@ -98,25 +97,35 @@ class UserProvider extends ChangeNotifier {
 
     switch (segment) {
       case SegmentType.swimming:
-        updatedUser =
-            trackType == TrackType.start
-                ? user.copyWith(swimStartAt: time)
-                : user.copyWith(swimFinishAt: time);
+        updatedUser = user.copyWith(swimFinishAt: time);
         break;
       case SegmentType.cycling:
-        updatedUser =
-            trackType == TrackType.start
-                ? user.copyWith(cyclingStartAt: time)
-                : user.copyWith(cyclingFinishAt: time);
+        updatedUser = user.copyWith(cyclingFinishAt: time);
         break;
       case SegmentType.running:
-        updatedUser =
-            trackType == TrackType.start
-                ? user.copyWith(runStartAt: time)
-                : user.copyWith(runFinishAt: time);
+        updatedUser = user.copyWith(runFinishAt: time);
         break;
     }
+    updateUser(updatedUser);
+    notifyListeners();
+  }
 
+  void resetStage({required String userId, required SegmentType segment}) {
+    final user = _userList.firstWhere((user) => user.id == userId);
+
+    final User? updatedUser;
+
+    switch (segment) {
+      case SegmentType.swimming:
+        updatedUser = user.copyWith(swimFinishAt: Duration.zero);
+        break;
+      case SegmentType.cycling:
+        updatedUser = user.copyWith(cyclingFinishAt: Duration.zero);
+        break;
+      case SegmentType.running:
+        updatedUser = user.copyWith(runFinishAt: Duration.zero);
+        break;
+    }
     updateUser(updatedUser);
     notifyListeners();
   }

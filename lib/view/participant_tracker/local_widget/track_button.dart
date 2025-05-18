@@ -1,72 +1,74 @@
 part of '../participant_tracker_view.dart';
 
-enum TrackType {
-  start('Start'),
-  finish('Finish');
-
-  final String label;
-
-  const TrackType(this.label);
-}
-
 class _TrackButton extends StatelessWidget {
-  final String label;
   final Duration? time;
   final VoidCallback onPressed;
+  final VoidCallback onReset;
   final String bibNumber;
-  final Duration? started;
 
   const _TrackButton({
-    required this.label,
     required this.onPressed,
     required this.bibNumber,
-    required this.started,
+    required this.onReset,
     this.time,
   });
 
   @override
   Widget build(BuildContext context) {
     final bool eventStarted = TimerService().isRunning;
-    final bool isButtonDisabled = !eventStarted;
-
-    final bool isFinishButtonDisabled =
-        label == TrackType.finish.label &&
-        (started == null || started == Duration.zero);
+    final bool isTracked = time != null && time != Duration.zero;
+    final bool isButtonDisabled = !eventStarted || isTracked;
 
     final Color buttonColor =
-        isButtonDisabled || isFinishButtonDisabled
-            ? Colors.grey
-            : const Color(0xFF123B77);
+        isButtonDisabled ? Colors.grey : const Color(0xFF123B77);
 
     return ElevatedButton(
-      onPressed:
-          (isButtonDisabled || isFinishButtonDisabled) ? null : onPressed,
+      onPressed: isButtonDisabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: buttonColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       child:
-          (time != null && time != Duration.zero)
-              ? Text(
-                formatDuration(time!),
-                style: const TextStyle(color: Colors.white),
-              )
-              : Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '$bibNumber ',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+          isTracked
+              ? Stack(
+                children: [
+                  if (eventStarted)
+                    Positioned(
+                      top: 2,
+                      right: 10,
+                      child: IconButton(
+                        icon: const Icon(Icons.restart_alt),
+                        color: Theme.of(context).primaryColor,
+                        iconSize: 30,
+                        onPressed: onReset,
                       ),
                     ),
-                    const WidgetSpan(child: SizedBox(width: 8)),
-                    TextSpan(
-                      text: label,
-                      style: const TextStyle(color: Colors.white),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          bibNumber,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          formatTotalTime(time!),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                ],
+              )
+              : Text(
+                bibNumber,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
     );

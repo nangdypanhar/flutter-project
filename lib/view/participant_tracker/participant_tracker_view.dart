@@ -160,50 +160,33 @@ class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
                 ),
                 const SizedBox(height: 12),
                 Expanded(
-                  child: ListView.builder(
+                  child: GridView.builder(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 3,
+                    ),
                     itemCount: participants.length,
                     itemBuilder: (context, index) {
                       final user = participants[index];
-                      final startTime = _getStartTimeForSegment(user);
                       final finishTime = _getFinishTimeForSegment(user);
 
-                      return Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: _TrackButton(
-                                started: startTime,
-                                bibNumber: user.bibNumber,
-                                label: TrackType.start.label,
-                                time: startTime,
-                                onPressed:
-                                    () => provider.updateParticipantStage(
-                                      userId: user.id,
-                                      segment: currentSegment,
-                                      time: TimerService().elapsed.value,
-                                      trackType: TrackType.start,
-                                    ),
-                              ),
+                      return _TrackButton(
+                        bibNumber: user.bibNumber,
+                        time: finishTime,
+                        onPressed:
+                            () => provider.updateParticipantStage(
+                              userId: user.id,
+                              segment: currentSegment,
+                              time: TimerService().elapsed.value,
                             ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: _TrackButton(
-                                started: startTime,
-                                bibNumber: user.bibNumber,
-                                label: TrackType.finish.label,
-                                time: finishTime,
-                                onPressed:
-                                    () => provider.updateParticipantStage(
-                                      userId: user.id,
-                                      segment: currentSegment,
-                                      time: TimerService().elapsed.value,
-                                      trackType: TrackType.finish,
-                                    ),
-                              ),
+                        onReset:
+                            () => provider.resetStage(
+                              userId: user.id,
+                              segment: currentSegment,
                             ),
-                          ],
-                        ),
                       );
                     },
                   ),
@@ -216,17 +199,6 @@ class _ParticipantTrackerViewState extends State<ParticipantTrackerView> {
         return content;
       },
     );
-  }
-
-  Duration _getStartTimeForSegment(User user) {
-    switch (currentSegment) {
-      case SegmentType.swimming:
-        return user.swimStartAt!;
-      case SegmentType.running:
-        return user.runStartAt!;
-      case SegmentType.cycling:
-        return user.cyclingStartAt!;
-    }
   }
 
   Duration _getFinishTimeForSegment(User user) {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/helper/time_format.dart';
 import 'package:flutter_project/service/timer_service.dart';
-import 'package:flutter_project/view/time_tracker/local_widget/tm_button.dart';
+
+part 'local_widget/tm_button.dart';
 
 class TimeTrackerView extends StatefulWidget {
   const TimeTrackerView({super.key});
@@ -65,7 +66,7 @@ class _TimeTrackerViewState extends State<TimeTrackerView> {
           ),
           const SizedBox(height: 40),
 
-          TmButton(
+          _TmButton(
             icon: isStarted ? Icons.stop : Icons.play_arrow,
             label: isStarted ? "Finish Race" : "Start Race",
             onPressed: _handleStartOrFinish,
@@ -81,30 +82,35 @@ class _TimeTrackerViewState extends State<TimeTrackerView> {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TmButton(
-                    icon: _timerService.isRunning ? Icons.pause : Icons.play_arrow,
+                  _TmButton(
+                    icon:
+                        _timerService.isRunning
+                            ? Icons.pause
+                            : Icons.play_arrow,
                     label: _pauseResumeLabel,
-                    onPressed: isDisabled
-                        ? null
-                        : () {
-                            if (_timerService.isRunning) {
-                              _timerService.pause();
-                            } else {
-                              _timerService.resume();
-                            }
-                            setState(() {});
-                          },
+                    onPressed:
+                        isDisabled
+                            ? null
+                            : () {
+                              if (_timerService.isRunning) {
+                                _timerService.pause();
+                              } else {
+                                _timerService.resume();
+                              }
+                              setState(() {});
+                            },
                     color: Colors.orange,
                   ),
-                  TmButton(
+                  _TmButton(
                     icon: Icons.replay,
                     label: "Reset",
-                    onPressed: isDisabled
-                        ? null
-                        : () {
-                            _timerService.reset();
-                            setState(() {});
-                          },
+                    onPressed:
+                        isDisabled
+                            ? null
+                            : () {
+                              _timerService.reset();
+                              setState(() {});
+                            },
                     color: Colors.blueGrey,
                   ),
                 ],
