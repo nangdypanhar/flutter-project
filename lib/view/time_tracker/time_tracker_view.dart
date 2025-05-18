@@ -14,20 +14,18 @@ class TimeTrackerView extends StatefulWidget {
 class _TimeTrackerViewState extends State<TimeTrackerView> {
   final TimerService _timerService = TimerService();
 
-  bool get isStarted => _timerService.elapsed.value > Duration.zero;
-
-  String get _pauseResumeLabel {
-    if (_timerService.isRunning) return "Pause";
-    return isStarted ? "Resume" : "Pause";
-  }
-
   void _handleStartOrFinish() {
+    final isStarted = _timerService.elapsed.value > Duration.zero;
     if (!isStarted) {
       _timerService.start();
     } else {
       _timerService.finish();
     }
-    setState(() {});
+  }
+
+  String _pauseResumeLabel(bool isRunning, bool isStarted) {
+    if (isRunning) return "Pause";
+    return isStarted ? "Resume" : "Pause";
   }
 
   @override
@@ -47,71 +45,62 @@ class _TimeTrackerViewState extends State<TimeTrackerView> {
           ),
           const SizedBox(height: 40),
 
-          Container(
-            width: 350,
-            height: 100,
-            alignment: Alignment.center,
-            child: ValueListenableBuilder<Duration>(
-              valueListenable: _timerService.elapsed,
-              builder: (context, duration, _) {
-                return Text(
-                  formatDuration(duration),
-                  style: const TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 40),
-
-          _TmButton(
-            icon: isStarted ? Icons.stop : Icons.play_arrow,
-            label: isStarted ? "Finish Race" : "Start Race",
-            onPressed: _handleStartOrFinish,
-            color: isStarted ? Colors.red : Colors.green,
-          ),
-          const SizedBox(height: 30),
-
           ValueListenableBuilder<Duration>(
             valueListenable: _timerService.elapsed,
             builder: (context, duration, _) {
-              final isDisabled = duration == Duration.zero;
+              final started = duration > Duration.zero;
+              final isDisabled = !started;
+              final isRunning = _timerService.isRunning;
 
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              return Column(
                 children: [
-                  _TmButton(
-                    icon:
-                        _timerService.isRunning
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                    label: _pauseResumeLabel,
-                    onPressed:
-                        isDisabled
-                            ? null
-                            : () {
-                              if (_timerService.isRunning) {
-                                _timerService.pause();
-                              } else {
-                                _timerService.resume();
-                              }
-                              setState(() {});
-                            },
-                    color: Colors.orange,
+                  Container(
+                    width: 350,
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: Text(
+                      formatDuration(duration),
+                      style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
+                  const SizedBox(height: 40),
+
                   _TmButton(
-                    icon: Icons.replay,
-                    label: "Reset",
-                    onPressed:
-                        isDisabled
-                            ? null
-                            : () {
-                              _timerService.reset();
-                              setState(() {});
-                            },
-                    color: Colors.blueGrey,
+                    icon: started ? Icons.stop : Icons.play_arrow,
+                    label: started ? "Finish Race" : "Start Race",
+                    onPressed: _handleStartOrFinish,
+                    color: started ? Colors.red : Colors.green,
+                  ),
+                  const SizedBox(height: 30),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _TmButton(
+                        icon: isRunning ? Icons.pause : Icons.play_arrow,
+                        label: _pauseResumeLabel(isRunning, started),
+                        onPressed:
+                            isDisabled
+                                ? null
+                                : () {
+                                  if (isRunning) {
+                                    _timerService.pause();
+                                  } else {
+                                    _timerService.resume();
+                                  }
+                                },
+                        color: Colors.orange,
+                      ),
+                      _TmButton(
+                        icon: Icons.replay,
+                        label: "Reset",
+                        onPressed: isDisabled ? null : _timerService.reset,
+                        color: Colors.blueGrey,
+                      ),
+                    ],
                   ),
                 ],
               );
