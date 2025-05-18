@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
+part of '../time_tracker_view.dart';
 
-class TmButton extends StatelessWidget {
+class _TmButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback? onPressed;
   final Color color;
 
-  const TmButton({
+  const _TmButton({
     required this.icon,
     required this.label,
     this.onPressed,
     required this.color,
-    super.key,
   });
 
   @override

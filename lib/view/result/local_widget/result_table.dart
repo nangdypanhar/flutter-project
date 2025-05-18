@@ -14,13 +14,16 @@ class _ResultTable extends StatelessWidget {
         DataColumn(label: Text('Rank')),
         DataColumn(label: Text('Bib')),
         DataColumn(label: Text('Name')),
-        DataColumn(label: Text('FinishAt')),
+        DataColumn(label: Text('Swimming')),
+        DataColumn(label: Text('Runnning')),
+        DataColumn(label: Text('Cycling')),
+        DataColumn(label: Text('Total Time')),
       ],
       rows:
           rankedUsers.asMap().entries.map((entry) {
             final index = entry.key;
             final user = entry.value;
-            Duration? totalTime = getTotalDurationForUser(user);
+            Duration? totalTime = getTotalTimeForUser(user);
             return DataRow(
               cells: [
                 DataCell(
@@ -39,6 +42,36 @@ class _ResultTable extends StatelessWidget {
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 150),
                     child: Text(user.name),
+                  ),
+                ),
+                DataCell(
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 120),
+                    child: Text(
+                      user.swimFinishAt == Duration.zero
+                          ? 'Not yet done'
+                          : formatTotalTime(user.swimFinishAt!),
+                    ),
+                  ),
+                ),
+                DataCell(
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 120),
+                    child: Text(
+                      user.runFinishAt == Duration.zero
+                          ? 'Not yet done'
+                          : formatTotalTime(user.runFinishAt!),
+                    ),
+                  ),
+                ),
+                DataCell(
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 120),
+                    child: Text(
+                      user.cyclingFinishAt == Duration.zero
+                          ? 'Not yet done'
+                          : formatTotalTime(user.cyclingFinishAt!),
+                    ),
                   ),
                 ),
                 DataCell(

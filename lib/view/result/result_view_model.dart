@@ -16,7 +16,7 @@ class ResultViewModel extends ChangeNotifier {
     final usersWithoutTime = <User>[];
 
     for (final user in userProvider.userList) {
-      final totalTime = getTotalDurationForUser(user);
+      final totalTime = getTotalTimeForUser(user);
 
       if (totalTime != Duration.zero) {
         usersWithTime.add(user);
@@ -25,9 +25,9 @@ class ResultViewModel extends ChangeNotifier {
       }
     }
     usersWithTime.sort((a, b) {
-      final totalTimeA = getTotalDurationForUser(a);
-      final totalTimeB = getTotalDurationForUser(b);
-      return totalTimeA.compareTo(totalTimeB); 
+      final totalTimeA = getTotalTimeForUser(a);
+      final totalTimeB = getTotalTimeForUser(b);
+      return totalTimeA.compareTo(totalTimeB);
     });
 
     return [...usersWithTime, ...usersWithoutTime];

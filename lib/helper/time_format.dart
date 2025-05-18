@@ -23,15 +23,6 @@ String formatDuration(Duration duration) {
   // Ex: 6:10:05:83
 }
 
-Duration getTotalDurationForUser(User user) {
-  Duration totalDuration = Duration.zero;
-
-  if (user.swimFinishAt != Duration.zero &&
-      user.runFinishAt != Duration.zero &&
-      user.cyclingFinishAt != Duration.zero) {
-    return totalDuration =
-        user.swimFinishAt! + user.runFinishAt! + user.cyclingFinishAt!;
-  }
-
-  return totalDuration;
+Duration getTotalTimeForUser(User user) {
+  return user.runFinishAt! + user.cyclingFinishAt! + user.swimFinishAt!;
 }
